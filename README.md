@@ -1,5 +1,3 @@
-Vejo os erros! Vou corrigir todo o conteúdo com a formatação correta:
-
 ```markdown
 <div align="center">
     <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-green?style=for-the-badge" alt="Status">

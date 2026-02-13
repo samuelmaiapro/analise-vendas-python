@@ -565,6 +565,6 @@ of this software and associated documentation files...
   <br>
   <br>
   <p><i>Desenvolvido com dedicação para a comunidade de dados</i></p>
-  <p><b>© 2026 Saumel de Andrade Maia. Todos os direitos reservados.</b></p>
+  <p><b>© 2026 Saumel Maia. Todos os direitos reservados.</b></p>
 </div>
 ```

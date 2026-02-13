@@ -3,126 +3,188 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import numpy as np  # 👈 IMPORTANTE: Adicionar esta linha!
+import numpy as np
 from scripts.analise_crescimento import calcular_crescimento
 import os
+from datetime import datetime
 
 # Configuração da página
 st.set_page_config(
-    page_title="Análise de Vendas",
-    page_icon="📊",
-    layout="wide"
+    page_title="Análise de Vendas - Samuel Maia",
+    page_icon="📈",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# Título
-st.title("📊 Dashboard de Análise de Vendas")
-st.markdown("---")
+# CSS personalizado
+st.markdown("""
+<style>
+    .main-header {
+        font-size: 3rem;
+        color: #FF4B4B;
+        text-align: center;
+        margin-bottom: 0;
+    }
+    .sub-header {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 2rem;
+    }
+    .metric-card {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+    .metric-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #FF4B4B;
+    }
+    .metric-label {
+        font-size: 0.9rem;
+        color: #666;
+        text-transform: uppercase;
+    }
+    .info-text {
+        background-color: #e7f3ff;
+        padding: 1rem;
+        border-radius: 5px;
+        border-left: 4px solid #0066cc;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Cabeçalho
+st.markdown("<h1 class='main-header'>📊 Análise de Vendas</h1>", unsafe_allow_html=True)
+st.markdown("<p class='sub-header'>Dashboard interativo para análise de crescimento e performance</p>",
+            unsafe_allow_html=True)
 
 
-# Função para carregar dados
+# Função para criar dados de exemplo MAIS REALISTAS
+@st.cache_data
+def criar_dados_exemplo():
+    """Cria dados de exemplo que parecem reais"""
+    np.random.seed(42)  # Para reprodutibilidade
+
+    # Criar datas de 2023-01-01 a 2024-12-31 (2 anos)
+    datas = pd.date_range('2023-01-01', '2024-12-31', freq='D')
+
+    # Tendência de crescimento + sazonalidade
+    tendencia = np.linspace(1000, 2000, len(datas))
+    sazonalidade = 500 * np.sin(2 * np.pi * np.arange(len(datas)) / 365)  # Ciclo anual
+    ruido = np.random.normal(0, 100, len(datas))
+
+    vendas = tendencia + sazonalidade + ruido
+    vendas = np.maximum(vendas, 500)  # Não permitir valores negativos
+
+    # Produtos e clientes
+    produtos = [f'PROD_{i:03d}' for i in range(1, 21)]
+    clientes = [f'CLI_{i:03d}' for i in range(1, 51)]
+
+    dados_exemplo = pd.DataFrame({
+        'DATA': datas,
+        'VENDAS': vendas.astype(int),
+        'QUANTIDADE': np.random.randint(1, 50, len(datas)),
+        'PRODUTO': np.random.choice(produtos, len(datas)),
+        'CLIENTE': np.random.choice(clientes, len(datas)),
+        'CATEGORIA': np.random.choice(['Eletrônicos', 'Móveis', 'Roupas', 'Livros'], len(datas))
+    })
+
+    return dados_exemplo
+
+
 @st.cache_data
 def carregar_dados():
-    # No Streamlit Cloud, o caminho é diferente
-    # Primeiro, tenta encontrar o arquivo em vários locais possíveis
+    """Carrega dados do arquivo ou usa exemplo"""
+
+    # Tentar encontrar dados reais
     possiveis_caminhos = [
         'dados_processados/fato_vendas.csv',
         'dados/fato_vendas.csv',
-        'dados_processados/vendas.csv',
-        'dados/vendas.csv',
         './dados_processados/fato_vendas.csv',
         './dados/fato_vendas.csv'
     ]
 
     for caminho in possiveis_caminhos:
         if os.path.exists(caminho):
-            st.success(f"✅ Dados carregados de: {caminho}")
-            return pd.read_csv(caminho)
+            df = pd.read_csv(caminho)
+            st.sidebar.success(f"✅ Dados reais carregados: {len(df)} registros")
+            return df, True
 
-    # Se não encontrar, mostrar aviso e usar dados de exemplo
-    st.warning("""
-    ⚠️ **Arquivo de dados não encontrado!** 
-
-    Para usar seus dados reais, faça upload do arquivo `fato_vendas.csv` usando o botão abaixo.
-    """)
-
-    # Criar dados de exemplo para demonstração
-    st.info("📊 **Usando dados de exemplo para demonstração**")
-
-    # Criar datas de 2023-01-01 a 2023-04-10 (100 dias)
-    datas = pd.date_range('2023-01-01', periods=100, freq='D')
-
-    dados_exemplo = pd.DataFrame({
-        'DATE_ID': datas,
-        'SALES': np.random.randint(1000, 10000, 100),
-        'QUANTITYORDERED': np.random.randint(1, 50, 100),
-        'PRODUCT_ID': np.random.randint(1, 11, 100),
-        'CUSTOMER_ID': np.random.randint(1, 21, 100)
-    })
-
-    return dados_exemplo
+    # Se não encontrar, usar dados de exemplo REALISTAS
+    st.sidebar.info("ℹ️ Usando dados de exemplo (simulados)")
+    return criar_dados_exemplo(), False
 
 
 # Sidebar
 with st.sidebar:
-    st.header("⚙️ Configurações")
+    st.markdown("## ⚙️ Configurações")
 
-    # Upload de arquivo (opcional)
+    # Upload de arquivo
     uploaded_file = st.file_uploader(
-        "📤 Ou faça upload do seu arquivo CSV",
-        type=['csv']
+        "📤 Upload seu CSV",
+        type=['csv'],
+        help="Faça upload do seu arquivo de vendas"
     )
 
     if uploaded_file is not None:
-        # Se o usuário fez upload, usar esse arquivo
         df = pd.read_csv(uploaded_file)
+        dados_reais = True
         st.success(f"✅ Arquivo carregado: {uploaded_file.name}")
     else:
-        # Caso contrário, usar o carregamento padrão
-        df = carregar_dados()
+        df, dados_reais = carregar_dados()
 
-    # Mostrar informações dos dados
-    st.subheader("📋 Informações do Dataset")
-    st.write(f"**Registros:** {len(df)}")
-    st.write(f"**Colunas:** {list(df.columns)}")
+    st.markdown("---")
 
-    # Pré-visualização dos dados
-    with st.expander("👀 Pré-visualização dos dados"):
-        st.dataframe(df.head())
+    # Informações do dataset
+    st.markdown("### 📋 Sobre os dados")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Registros", f"{len(df):,}")
+    with col2:
+        st.metric("Colunas", len(df.columns))
 
-    # Seleção de colunas
-    st.subheader("🔧 Colunas para Análise")
+    # Tipo de dados
+    tipo_dados = "**Dados Reais**" if dados_reais else "**Dados de Exemplo**"
+    st.markdown(f"Tipo: {tipo_dados}")
 
-    # Identificar colunas de data
-    colunas_data = [col for col in df.columns if any(
-        termo in col.lower() for termo in ['date', 'data', 'id', 'order']
-    )]
+    st.markdown("---")
 
-    if not colunas_data:
-        colunas_data = df.select_dtypes(include=['datetime64']).columns.tolist()
+    # Configurações de análise
+    st.markdown("### 🔧 Análise")
+
+    # Identificar colunas automaticamente
+    colunas = df.columns.tolist()
+
+    # Coluna de data
+    data_options = [col for col in colunas if any(
+        termo in col.lower() for termo in ['date', 'data', 'dia', 'mes']
+    )] or colunas
 
     coluna_data = st.selectbox(
-        "📅 Coluna de Data",
-        colunas_data if colunas_data else df.columns,
-        index=0 if colunas_data else 0
+        "📅 Coluna de data",
+        data_options,
+        index=0
     )
 
-    # Identificar colunas de valor
-    colunas_valor = [col for col in df.columns if any(
-        termo in col.lower() for termo in ['sales', 'venda', 'price', 'total', 'quant']
-    )]
-
-    if not colunas_valor:
-        colunas_valor = df.select_dtypes(include=['float64', 'int64']).columns.tolist()
+    # Coluna de valor
+    valor_options = [col for col in colunas if any(
+        termo in col.lower() for termo in ['sales', 'venda', 'price', 'total', 'valor']
+    )] or df.select_dtypes(include=[np.number]).columns.tolist()
 
     coluna_valor = st.selectbox(
-        "💰 Coluna de Valor",
-        colunas_valor if colunas_valor else df.columns,
-        index=0 if colunas_valor else 0
+        "💰 Coluna de valor",
+        valor_options,
+        index=0 if valor_options else 0
     )
 
-    # Período de análise
+    # Período
     periodo = st.selectbox(
-        "📊 Período de Análise",
+        "📊 Período",
         ["Mensal", "Trimestral", "Anual"],
         index=0
     )
@@ -133,60 +195,65 @@ with st.sidebar:
         "Anual": "A"
     }
 
-# Main content
+# MAIN CONTENT
 try:
     # Preparar dados
     df_analise = df.copy()
 
-    # Converter data (tentativa inteligente)
-    try:
-        df_analise[coluna_data] = pd.to_datetime(df_analise[coluna_data])
-    except:
-        st.error(f"Não foi possível converter a coluna '{coluna_data}' para data.")
-        st.stop()
+    # Converter data
+    df_analise[coluna_data] = pd.to_datetime(df_analise[coluna_data], errors='coerce')
+    df_analise = df_analise.dropna(subset=[coluna_data])
 
     # Calcular crescimento
-    periodo_sel = periodo_map[periodo]
-    with st.spinner('🔄 Calculando crescimento...'):
+    with st.spinner('🔄 Calculando análise...'):
         resultado = calcular_crescimento(
             df_analise,
             coluna_data=coluna_data,
             coluna_valor=coluna_valor,
-            periodo=periodo_sel
+            periodo=periodo_map[periodo]
         )
 
     st.success("✅ Análise concluída!")
 
-    # Layout com colunas para métricas
-    st.subheader("📈 Métricas de Crescimento")
+    # Métricas principais
+    st.markdown("## 📈 Métricas de Crescimento")
+
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
         crescimento_medio = resultado['crescimento_%'].mean()
+        delta = resultado['crescimento_%'].iloc[-1] - resultado['crescimento_%'].iloc[-2] if len(resultado) > 1 else 0
         st.metric(
-            "📊 Crescimento Médio",
-            f"{crescimento_medio:.1f}%" if not pd.isna(crescimento_medio) else "N/A"
+            "Crescimento Médio",
+            f"{crescimento_medio:.1f}%" if not pd.isna(crescimento_medio) else "N/A",
+            delta=f"{delta:.1f} pp" if not pd.isna(delta) else None
         )
 
     with col2:
-        ultimo_cresc = resultado['crescimento_%'].iloc[-1] if len(resultado) > 0 else None
+        ultimo_valor = resultado['total_vendas'].iloc[-1] if len(resultado) > 0 else 0
         st.metric(
-            "🔄 Último Período",
-            f"{ultimo_cresc:.1f}%" if ultimo_cresc and not pd.isna(ultimo_cresc) else "N/A"
+            "Último Período",
+            f"R$ {ultimo_valor:,.0f}".replace(',', '.')
         )
 
     with col3:
         melhor_cresc = resultado['crescimento_%'].max()
+        melhor_periodo = resultado.loc[resultado['crescimento_%'].idxmax(), coluna_data] if not pd.isna(
+            melhor_cresc) else "N/A"
         st.metric(
-            "🏆 Melhor Período",
-            f"{melhor_cresc:.1f}%" if not pd.isna(melhor_cresc) else "N/A"
+            "Melhor Período",
+            f"{melhor_cresc:.1f}%" if not pd.isna(melhor_cresc) else "N/A",
+            delta=f"em {melhor_periodo}" if melhor_periodo != "N/A" else None
         )
 
     with col4:
         pior_cresc = resultado['crescimento_%'].min()
+        pior_periodo = resultado.loc[resultado['crescimento_%'].idxmin(), coluna_data] if not pd.isna(
+            pior_cresc) else "N/A"
         st.metric(
-            "📉 Pior Período",
-            f"{pior_cresc:.1f}%" if not pd.isna(pior_cresc) else "N/A"
+            "Pior Período",
+            f"{pior_cresc:.1f}%" if not pd.isna(pior_cresc) else "N/A",
+            delta=f"em {pior_periodo}" if pior_periodo != "N/A" else None
         )
 
     st.markdown("---")
@@ -195,100 +262,181 @@ try:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("💰 Vendas por Período")
+        st.markdown("### 💰 Evolução das Vendas")
+
         fig_vendas = px.line(
             resultado,
             x=coluna_data,
             y='total_vendas',
             markers=True,
-            title=f"Vendas {periodo}"
+            line_shape='spline',
+            template='plotly_white'
         )
+
+        # Adicionar área sob a linha
+        fig_vendas.add_trace(
+            go.Scatter(
+                x=resultado[coluna_data],
+                y=resultado['total_vendas'],
+                fill='tozeroy',
+                fillcolor='rgba(255, 75, 75, 0.1)',
+                line=dict(color='rgba(255, 75, 75, 0)'),
+                showlegend=False,
+                hoverinfo='skip'
+            )
+        )
+
         fig_vendas.update_layout(
             xaxis_title="Período",
             yaxis_title="Valor Total (R$)",
-            hovermode='x unified'
+            hovermode='x unified',
+            height=400
         )
+
         st.plotly_chart(fig_vendas, use_container_width=True)
 
     with col2:
-        st.subheader("📊 Taxa de Crescimento")
-        # Criar coluna de cores baseada no valor
+        st.markdown("### 📊 Taxa de Crescimento")
+
+        # Cores baseadas no valor
         resultado['cor'] = resultado['crescimento_%'].apply(
-            lambda x: 'green' if x > 0 else 'red' if x < 0 else 'gray'
+            lambda x: '#2ecc71' if x > 0 else '#e74c3c' if x < 0 else '#95a5a6'
         )
 
         fig_cresc = px.bar(
             resultado.dropna(subset=['crescimento_%']),
             x=coluna_data,
             y='crescimento_%',
-            title=f"Crescimento {periodo} (%)",
             color='cor',
-            color_discrete_map={'green': '#2ecc71', 'red': '#e74c3c', 'gray': '#95a5a6'}
+            color_discrete_map='identity',
+            template='plotly_white'
         )
+
         fig_cresc.update_layout(
             xaxis_title="Período",
             yaxis_title="Crescimento (%)",
             showlegend=False,
-            hovermode='x unified'
+            height=400
         )
+
+        # Adicionar linha em zero
+        fig_cresc.add_hline(y=0, line_dash="dash", line_color="gray", opacity=0.5)
+
         st.plotly_chart(fig_cresc, use_container_width=True)
 
     st.markdown("---")
 
-    # Tabela de resultados
-    st.subheader("📋 Detalhamento dos Resultados")
+    # Análises adicionais
+    tab1, tab2, tab3 = st.tabs(["📋 Dados Detalhados", "📊 Estatísticas", "ℹ️ Sobre"])
 
-    # Formatar tabela
-    tabela = resultado.copy()
-    tabela['total_vendas'] = tabela['total_vendas'].apply(lambda x: f"R$ {x:,.2f}")
-    tabela['crescimento_%'] = tabela['crescimento_%'].apply(
-        lambda x: f"{x:.2f}%" if pd.notna(x) else "-"
-    )
+    with tab1:
+        st.markdown("### Tabela de Resultados")
 
-    # Renomear colunas para melhor visualização
-    tabela = tabela.rename(columns={
-        coluna_data: 'Período',
-        'total_vendas': 'Vendas Totais',
-        'crescimento_%': 'Crescimento (%)'
-    })
+        # Formatar tabela
+        tabela = resultado.copy()
+        tabela['total_vendas'] = tabela['total_vendas'].apply(
+            lambda x: f"R$ {x:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+        tabela['crescimento_%'] = tabela['crescimento_%'].apply(
+            lambda x: f"{x:.2f}%" if pd.notna(x) else "-"
+        )
 
-    st.dataframe(tabela, use_container_width=True, hide_index=True)
+        # Renomear colunas
+        tabela = tabela.rename(columns={
+            coluna_data: 'Período',
+            'total_vendas': 'Vendas Totais',
+            'crescimento_%': 'Crescimento'
+        })
 
-    # Download dos resultados
-    csv = resultado.to_csv(index=False)
-    st.download_button(
-        label="📥 Download Resultados (CSV)",
-        data=csv,
-        file_name=f"crescimento_{periodo.lower()}.csv",
-        mime="text/csv"
-    )
+        st.dataframe(
+            tabela,
+            use_container_width=True,
+            hide_index=True,
+            column_config={
+                "Período": st.column_config.DateColumn("Período"),
+                "Vendas Totais": st.column_config.TextColumn("Vendas Totais"),
+                "Crescimento": st.column_config.TextColumn("Crescimento")
+            }
+        )
 
-    # Estatísticas adicionais
-    with st.expander("📊 Estatísticas Detalhadas"):
+        # Download
+        csv = resultado.to_csv(index=False)
+        st.download_button(
+            label="📥 Download CSV",
+            data=csv,
+            file_name=f"analise_vendas_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv"
+        )
+
+    with tab2:
+        st.markdown("### Estatísticas Descritivas")
+
         stats = resultado['crescimento_%'].describe()
-        st.dataframe(stats.to_frame().T)
+        stats_df = pd.DataFrame({
+            'Estatística': ['Média', 'Desvio Padrão', 'Mínimo', '25%', '50%', '75%', 'Máximo'],
+            'Valor': [
+                f"{stats['mean']:.2f}%" if not pd.isna(stats['mean']) else "N/A",
+                f"{stats['std']:.2f}%" if not pd.isna(stats['std']) else "N/A",
+                f"{stats['min']:.2f}%" if not pd.isna(stats['min']) else "N/A",
+                f"{stats['25%']:.2f}%" if not pd.isna(stats['25%']) else "N/A",
+                f"{stats['50%']:.2f}%" if not pd.isna(stats['50%']) else "N/A",
+                f"{stats['75%']:.2f}%" if not pd.isna(stats['75%']) else "N/A",
+                f"{stats['max']:.2f}%" if not pd.isna(stats['max']) else "N/A"
+            ]
+        })
 
-        # Melhor e pior período
-        melhor_idx = resultado['crescimento_%'].idxmax()
-        pior_idx = resultado['crescimento_%'].idxmin()
+        st.dataframe(stats_df, hide_index=True, use_container_width=True)
 
-        st.write(f"**🏆 Melhor período:** {resultado.iloc[melhor_idx][coluna_data]} - "
-                 f"Crescimento: {resultado.iloc[melhor_idx]['crescimento_%']:.2f}%")
-        st.write(f"**📉 Pior período:** {resultado.iloc[pior_idx][coluna_data]} - "
-                 f"Crescimento: {resultado.iloc[pior_idx]['crescimento_%']:.2f}%")
+        # Períodos extremos
+        st.markdown("### Períodos de Destaque")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown("**🏆 Top 3 Melhores Crescimentos**")
+            top3 = resultado.nlargest(3, 'crescimento_%')[['total_vendas', 'crescimento_%']]
+            st.dataframe(top3, use_container_width=True)
+
+        with col2:
+            st.markdown("**📉 Top 3 Piores Crescimentos**")
+            bottom3 = resultado.nsmallest(3, 'crescimento_%')[['total_vendas', 'crescimento_%']]
+            st.dataframe(bottom3, use_container_width=True)
+
+    with tab3:
+        st.markdown("### Sobre esta Análise")
+
+        st.markdown("""
+        **Dashboard desenvolvido para análise de vendas**
+
+        **Funcionalidades:**
+        - 📈 Cálculo automático de crescimento periódico
+        - 📊 Visualizações interativas
+        - 📋 Exportação de dados
+        - 🔄 Suporte a diferentes períodos (mensal, trimestral, anual)
+
+        **Como usar:**
+        1. Faça upload do seu arquivo CSV ou use dados de exemplo
+        2. Selecione as colunas corretas para data e valor
+        3. Escolha o período de análise
+        4. Explore os resultados!
+
+        **Autor:** Samuel Maia
+        **Projeto:** [GitHub](https://github.com/samuelmaiapro/analise-vendas-python)
+        """)
+
+        if not dados_reais:
+            st.info("💡 **Dica:** Para uma análise mais precisa, faça upload do seu arquivo de vendas real!")
 
 except Exception as e:
     st.error(f"❌ Erro na análise: {str(e)}")
-    st.exception(e)  # Isso vai mostrar o erro completo para debug
-    st.write("Verifique se as colunas selecionadas são apropriadas para a análise.")
+    st.exception(e)
 
 # Footer
 st.markdown("---")
 st.markdown(
-    """
-    <div style='text-align: center'>
-        Desenvolvido com ❤️ usando Streamlit | 
-        <a href='https://github.com/samuelmaiapro/analise-vendas-python' target='_blank'>GitHub</a>
+    f"""
+    <div style='text-align: center; color: #666; padding: 1rem;'>
+        Desenvolvido por <a href='https://github.com/samuelmaiapro' target='_blank'>Samuel Maia</a> | 
+        Última atualização: {datetime.now().strftime('%d/%m/%Y %H:%M')}
     </div>
     """,
     unsafe_allow_html=True

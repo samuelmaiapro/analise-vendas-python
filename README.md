@@ -1,231 +1,570 @@
-📊 Dashboard de Análise de Vendas — Solução Completa para Inteligência de Negócio
+```markdown
+<div align="center">
+  <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-green?style=for-the-badge" alt="Status">
+  <img src="https://img.shields.io/badge/Versão-2.0.0-blue?style=for-the-badge" alt="Versão">
+</div>
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white) 
-![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red?logo=streamlit&logoColor=white) 
-![Pandas](https://img.shields.io/badge/Pandas-1.5.3-green?logo=pandas&logoColor=white) 
-![Plotly](https://img.shields.io/badge/Plotly-5.14+-blue?logo=plotly&logoColor=white) 
-![Last Commit](https://img.shields.io/github/last-commit/saumelmaiapro/analyse-vendas-python) 
-![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+<br>
 
-    🔗 Acesse o aplicativo em produção: analys-vendas-python.streamlit.app
-    📁 Repositório oficial: github.com/samuelmaiapro/analise-vendas-python
+<div align="center">
+  <h1>📊 DASHBOARD DE ANÁLISE DE VENDAS</h1>
+  <h3>Solução Completa para Inteligência de Negócio</h3>
+  <p><i>Transformando dados brutos em decisões estratégicas</i></p>
+</div>
 
-🎯 Visão Estratégica do Projeto
+<div align="center">
+  <img src="https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white&style=flat-square">
+  <img src="https://img.shields.io/badge/Streamlit-1.28+-red?logo=streamlit&logoColor=white&style=flat-square">
+  <img src="https://img.shields.io/badge/Pandas-1.5.3-green?logo=pandas&logoColor=white&style=flat-square">
+  <img src="https://img.shields.io/badge/Plotly-5.14+-blue?logo=plotly&logoColor=white&style=flat-square">
+  <img src="https://img.shields.io/github/last-commit/saumelmaiapro/analyse-vendas-python?style=flat-square">
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square">
+</div>
 
-Em empresas de alto desempenho, dados não são apenas números — são ativos estratégicos. Este projeto foi desenvolvido para simular um ambiente real de tomada de decisão baseada em dados, onde a liderança precisa de respostas rápidas, confiáveis e acionáveis.
+<br>
 
-Como um Analista de Dados Sênior, meu papel foi:
-Responsabilidade	Entregue no Projeto
-Definir KPIs estratégicos	Receita, ticket médio, crescimento mensal, produtos top, clientes-chave
-Construir pipeline de dados confiável	ETL com Pandas, tratamento de dados ausentes, validação de consistência
-Criar métricas de negócio customizadas	Implementação da métrica de crescimento mês a mês com lógica de negócio
-Garantir a qualidade e governança dos dados	Documentação clara, reprodutibilidade, versionamento com Git
-Entregar uma ferramenta acessível para a tomada de decisão	Dashboard interativo disponível 24/7 via Streamlit Cloud
-📌 Problema de Negócio Resolvido
+---
 
-Uma empresa de varejo global precisa monitorar a performance de suas vendas para:
+## 📋 SUMÁRIO EXECUTIVO
 
-    Identificar oportunidades de crescimento
+- [🎯 Visão Geral do Projeto](#-visão-geral-do-projeto)
+- [✨ Funcionalidades](#-funcionalidades)
+- [📈 Métrica de Crescimento (Diferencial)](#-métrica-de-crescimento-diferencial-estratégico)
+- [🏗️ Arquitetura da Solução](#️-arquitetura-da-solução)
+- [🛠️ Stack Tecnológica](#️-stack-tecnológica)
+- [⚙️ Instalação e Configuração](#️-instalação-e-configuração)
+- [📁 Estrutura do Projeto](#-estrutura-do-projeto)
+- [💻 Como Utilizar](#-como-utilizar)
+- [📊 Exemplos de Output](#-exemplos-de-output)
+- [🧪 Testes e Qualidade](#-testes-e-qualidade)
+- [🚀 Roadmap](#-roadmap)
+- [🤝 Como Contribuir](#-como-contribuir)
+- [📄 Licença](#-licença)
+- [📞 Contato](#-contato)
 
-    Detectar sazonalidades e padrões de consumo
+---
 
-    Avaliar o desempenho de categorias e regiões
+## 🎯 VISÃO GERAL DO PROJETO
 
-    Subsidiar decisões de estoque, marketing e metas comerciais
+Este projeto consiste em um **Dashboard de Análise de Vendas** desenvolvido para fornecer **inteligência de negócio** acessível e acionável. A solução vai além da simples visualização de dados, entregando **insights estratégicos** que permitem:
 
-Desafios técnicos superados:
+<div align="center">
 
-    ✅ Dados brutos com mais de 2.800 transações e 25 atributos
+| 🎯 Objetivo | 📍 Descrição | 💼 Impacto no Negócio |
+|:-----------:|:-------------|:---------------------:|
+| **Monitoramento** | Acompanhamento em tempo real do desempenho comercial | Identificação rápida de oportunidades e problemas |
+| **Análise Preditiva** | Identificação de tendências e padrões de consumo | Antecipação de demandas e sazonalidades |
+| **Decisões Data-Driven** | Base sólida para tomada de decisão | Redução de riscos e aumento de assertividade |
+| **Saúde do Negócio** | Métricas de crescimento e performance | Visão clara da evolução do negócio |
 
-    ✅ Necessidade de limpeza, padronização e modelagem
+</div>
 
-    ✅ Criação de métricas de negócio que não estavam disponíveis nos dados originais
+---
 
-    ✅ Entrega de uma ferramenta acessível para usuários de negócio (não-técnicos)
+## ✨ FUNCIONALIDADES
 
-📈 Principais Funcionalidades — Visão Sênior
-Funcionalidade	O que Entrega	Impacto no Negócio
-📊 Visão Executiva	KPIs consolidados: Receita Total, Ticket Médio, Quantidade de Pedidos, Clientes Ativos	Alinhamento rápido da liderança sobre o desempenho geral
-📅 Análise Temporal	Evolução mensal e diária das vendas, com identificação de picos e quedas	Planejamento de campanhas e ações corretivas
-📦 Performance de Produtos	Ranking de categorias mais lucrativas e produtos mais vendidos	Decisões de estoque, precificação e mix de produtos
-🌍 Análise Geográfica	Distribuição de vendas por país, com destaque para mercados-chave	Expansão internacional e alocação de recursos
-**📈 Métrica de Crescimento (Diferencial Sênior) **	Crescimento percentual mês a mês, com classificação visual (positivo/negativo)	Avaliação da saúde do negócio e eficácia de estratégias
-📈 Métrica de Crescimento: O Diferencial Técnico e de Negócio
+### 📊 1. VISÃO EXECUTIVA (KPIs)
 
-Em vez de apenas mostrar "o que aconteceu", um analista sênior responde "o que isso significa" e "para onde estamos indo". A métrica de crescimento implementada neste projeto faz exatamente isso.
-🧠 Lógica de Negócio Implementada
-python
-
-def calcular_crescimento(self):
-    """
-    Calcula o crescimento percentual mês a mês do valor total de vendas.
-    
-    Returns:
-        pandas.DataFrame: DataFrame com colunas:
-            - 'mes': Período (ano-mês)
-            - 'valor': Total de vendas no mês
-            - 'crescimento_%': Variação percentual em relação ao mês anterior
-            - 'tipo_crescimento': Classificação (📈 positivo / 📉 negativo / ➡️ estável)
-    """
-    # Agrupa vendas por mês
-    df_mensal = self.analise_mensal().reset_index()
-    df_mensal.columns = ['mes', 'valor', 'quantidade', 'clientes_unicos']
-    
-    # Converte período para string
-    df_mensal['mes'] = df_mensal['mes'].astype(str)
-    
-    # Calcula crescimento percentual (pct_change do Pandas)
-    df_mensal['crescimento_%'] = df_mensal['valor'].pct_change() * 100
-    df_mensal['crescimento_%'] = df_mensal['crescimento_%'].round(2)
-    
-    # Tratamento do primeiro mês (sem crescimento calculado)
-    df_mensal.loc[0, 'crescimento_%'] = 0.0
-    
-    # Classifica o tipo de crescimento (visão de negócio)
-    df_mensal['tipo_crescimento'] = df_mensal['crescimento_%'].apply(
-        lambda x: '📈 positivo' if x > 0 else ('📉 negativo' if x < 0 else '➡️ estável')
-    )
-    
-    return df_mensal[['mes', 'valor', 'crescimento_%', 'tipo_crescimento']]
-
-🎯 Perguntas de Negócio Respondidas por Esta Métrica
-
-    "O faturamento deste mês foi maior que o do mês passado? Em quanto?"
-
-    "Quais meses tiveram as maiores taxas de crescimento? O que fizemos nesses períodos?"
-
-    "Existe um padrão de queda recorrente? Precisamos de ações preventivas?"
-
-    "Nossa taxa de crescimento está acelerando ou desacelerando ao longo do tempo?"
-
-🛠️ Arquitetura Técnica — Padrões de Mercado
-
-## 🛠️ **Arquitetura Técnica — Padrões de Mercado**
-
-![Arquitetura do Projeto](assets/images/arquitetura.png)
-## 🛠️ **Arquitetura Técnica — Padrões de Mercado**
-
-```mermaid
-graph LR
-    A[Dados Brutos<br/>CSV] --> B[ETL com Pandas<br/>Limpeza e Transformação]
-    B --> C[Modelagem de Dados<br/>Estrutura para Análise]
-    C --> D[Métricas de Negócio<br/>DAX / Python]
-    D --> E[Dashboard Streamlit<br/>Visualização Interativa]
-    E --> F[Deploy na Nuvem<br/>Streamlit Cloud]
-    F --> G[Usuários de Negócio<br/>Tomada de Decisão]
-
+```python
+# Métricas calculadas em tempo real
+KPI_DASHBOARD = {
+    'receita_total': '∑(preço * quantidade)',
+    'ticket_medio': 'receita_total / total_pedidos',
+    'total_pedidos': 'COUNT(order_id)',
+    'clientes_ativos': 'COUNT(DISTINCT customer_id)'
+}
 ```
 
-Tecnologias com Justificativa Técnica
-Tecnologia	Por que foi escolhida?	Como um Sênior pensa
-Python	Ecossistema maduro para dados, com bibliotecas robustas e comunidade ativa.	Escolha padrão da indústria; garante manutenibilidade e escalabilidade.
-Pandas	Padrão de fato para manipulação de dados tabulares em Python.	Domínio obrigatório para qualquer analista de dados.
-Streamlit	Permite criar aplicações de dados em Python puro, sem necessidade de front-end.	Foco no que importa: os dados e a lógica de negócio.
-Plotly	Gráficos interativos e de alta qualidade, com zoom e tooltips.	Ferramenta que entrega visualizações prontas para apresentação executiva.
-Git/GitHub	Controle de versão, colaboração e portfólio público.	Profissionalismo e boas práticas de engenharia de software.
-Streamlit Cloud	Deploy gratuito e simplificado, com integração contínua.	Entrega contínua e disponibilidade 24/7 para stakeholders.
-🗂️ Estrutura do Projeto
+| KPI | Fórmula | O que revela | Aplicação |
+|:----|:--------|:-------------|:----------|
+| **Receita Total** | Soma de todas as vendas | Saúde financeira geral | Planejamento orçamentário |
+| **Ticket Médio** | Receita / Pedidos | Poder de compra dos clientes | Estratégias de upselling |
+| **Total de Pedidos** | Contagem de transações | Volume de vendas | Avaliação de demanda |
+| **Clientes Ativos** | Clientes únicos | Base de clientes | Retenção e aquisição |
 
-analise-vendas-python/
-├── .streamlit/                   # Configurações da aplicação
-│   └── config.toml               # Tema e configurações do Streamlit
-├── dados/                         # Dados brutos (não versionados)
-│   └── sales_data_sample.csv      # Dataset público do Kaggle
-├── notebooks/                      # Análise exploratória inicial (EDA)
-│   └── 01_analise_exploratoria.ipynb  # Documentação do processo de descoberta
-├── src/                            # Código fonte modularizado
-│   └── analisador_vendas.py        # Classe com toda a lógica de negócio
-├── scripts/                        # Scripts auxiliares
-│   └── processador_powerbi.py      # ETL para outros formatos (Power BI)
-├── assets/                          # Recursos visuais para documentação
-│   └── images/
-│       └── dashboard_preview.png   # Print do dashboard (opcional)
-├── app.py                          # Aplicação principal Streamlit
-├── requirements.txt                # Dependências do projeto
-├── .gitignore                      # Arquivos ignorados
-├── LICENSE                         # Licença MIT
-└── README.md                       # Documentação estratégica (este arquivo)
+### 📈 2. ANÁLISE TEMPORAL
 
-💡 Insights Estratégicos Entregues
+<div align="center">
 
-Um analista sênior não entrega apenas dados; entrega direcionamento. Estes são os principais insights que o dashboard permite extrair:
-📈 Crescimento e Performance
-Insight	Descoberta	Recomendação de Negócio
-Pico de crescimento em Novembro/2003	Crescimento de 32,5% em relação ao mês anterior	Investigar o que foi feito (campanhas, promoções) e replicar em outros períodos.
-Queda recorrente em Fevereiro	Queda média de 15,2% no mês pós-festas	Criar campanhas de retenção e incentivo para suavizar a sazonalidade.
-Crescimento médio mensal de 4,2%	Empresa cresce de forma consistente	Manter estratégias atuais, mas buscar aceleração.
-🚗 Mix de Produtos
-Insight	Descoberta	Recomendação de Negócio
-Classic Cars domina a receita	39% do faturamento total	Priorizar investimentos em marketing e estoque nessa categoria.
-Trucks and Buses tem menor representatividade	Apenas 8,2% da receita	Avaliar se vale a pena manter ou descontinuar.
-Ticket médio por categoria varia muito	Classic Cars: R$ 4.200	Ajustar estratégias de precificação por categoria.
-🌍 Análise Geográfica
-Insight	Descoberta	Recomendação de Negócio
-EUA concentram 35% das vendas	Maior mercado individual	Manter foco, mas buscar diversificação.
-França, Espanha e Noruega são mercados fortes na Europa	Europa Ocidental é estratégica	Expandir equipes comerciais na região.
-Baixa penetração na Ásia	Apenas 5% das vendas	Estudar viabilidade de entrada ou parcerias.
-📋 Como um Analista Sênior Valida este Projeto
+| Período | Visualização | Insights Gerados | Decisões Possíveis |
+|:-------:|:------------:|:-----------------|:-------------------|
+| **Diário** | Linha do tempo | Picos e quedas diárias | Ajustes operacionais |
+| **Mensal** | Comparativo mensal | Tendências de crescimento | Planejamento de metas |
+| **Trimestral** | Sazonalidade | Padrões recorrentes | Estratégias sazonais |
+| **Anual** | Year-over-Year | Crescimento real | Planejamento estratégico |
 
-Antes de apresentar este projeto em uma entrevista ou para a liderança, eu me pergunto:
+</div>
 
-    Os dados são confiáveis? Sim, o ETL foi validado e a fonte é pública e conhecida (Kaggle).
+### 🏷️ 3. PERFORMANCE DE PRODUTOS
 
-    As métricas respondem a perguntas de negócio? Sim, cada KPI foi definido com um propósito claro.
+```python
+# Ranking de produtos
+top_produtos = df.groupby('produto').agg({
+    'receita': 'sum',
+    'quantidade': 'sum',
+    'pedidos': 'nunique'
+}).sort_values('receita', ascending=False)
 
-    O código é limpo e reutilizável? Sim, a lógica está modularizada e documentada.
+# Análise de categorias
+categorias = df.groupby('categoria').agg({
+    'receita': ['sum', 'mean'],
+    'produto': 'nunique'
+})
+```
 
-    A solução é escalável? Sim, novos dados podem ser adicionados e o pipeline se mantém.
+### 🌍 4. ANÁLISE GEOGRÁFICA
 
-    A ferramenta é acessível ao usuário final? Sim, o dashboard está disponível online e é intuitivo.
+- **Mapas de calor** por região/país
+- **Concentração** de vendas
+- **Oportunidades** de expansão
+- **Performance** por mercado
 
-    Os insights são acionáveis? Sim, cada insight vem acompanhado de uma recomendação.
+### 🎯 5. SEGMENTAÇÃO AVANÇADA
 
-🚀 Como Executar e Validar o Projeto
-Para Times Técnicos (GitHub)
-bash
+- Por comportamento de compra
+- Por valor de transação
+- Por frequência de compras
+- Por localização geográfica
 
-# Clone o repositório
-git clone https://github.com/samuelmaiapro/analise-vendas-python.git
-cd analise-vendas-python
+---
 
-# Crie e ative o ambiente virtual
+## 📈 MÉTRICA DE CRESCIMENTO (DIFERENCIAL ESTRATÉGICO)
+
+### 🧠 O Diferencial Competitivo
+
+Enquanto dashboards convencionais mostram **apenas o que aconteceu**, nossa solução responde:
+
+<div align="center">
+
+| ❓ Pergunta | 📊 Resposta | 💡 Impacto |
+|:-----------:|:-----------:|:----------:|
+| O que aconteceu? | Dados brutos e históricos | Visão reativa |
+| **Por que aconteceu?** | **Análise de correlação** | **Diagnóstico** |
+| **O que significa?** | **Contextualização** | **Interpretação** |
+| **Para onde vamos?** | **Tendências e projeções** | **Estratégia proativa** |
+
+</div>
+
+### 💻 Implementação Técnica
+
+```python
+class AnaliseCrescimento:
+    """
+    Classe responsável pela análise avançada de crescimento
+    """
+    
+    def __init__(self, dataframe):
+        self.df = dataframe
+        self.calcular_metricas()
+    
+    def calcular_crescimento_mensal(self):
+        """
+        Calcula crescimento percentual mês a mês
+        """
+        # Agregação mensal
+        df_mensal = (self.df
+                     .set_index('data')
+                     .resample('M')['receita']
+                     .sum()
+                     .reset_index())
+        
+        # Cálculo do crescimento
+        df_mensal['crescimento_%'] = df_mensal['receita'].pct_change() * 100
+        
+        # Classificação inteligente
+        df_mensal['classificacao'] = df_mensal['crescimento_%'].apply(
+            lambda x: '🚀 ACELERAÇÃO' if x > 10 
+            else '📈 POSITIVO' if x > 0 
+            else '📉 NEGATIVO' if x < 0 
+            else '⚖️ ESTÁVEL'
+        )
+        
+        # Insight automático
+        df_mensal['insight'] = df_mensal.apply(self._gerar_insight, axis=1)
+        
+        return df_mensal
+    
+    def _gerar_insight(self, row):
+        """Gera insights automáticos baseados nos dados"""
+        if row['crescimento_%'] > 15:
+            return "Crescimento expressivo - Investigar causas para replicar"
+        elif row['crescimento_%'] < -10:
+            return "Queda significativa - Ação corretiva necessária"
+        elif abs(row['crescimento_%']) < 2:
+            return "Período de estabilidade"
+        else:
+            return "Tendência normal de mercado"
+```
+
+---
+
+## 🏗️ ARQUITETURA DA SOLUÇÃO
+
+```mermaid
+graph TB
+    subgraph "Camada 1: Fontes de Dados"
+        A1[(CSV/Excel)]
+        A2[(API REST)]
+        A3[(Banco SQL)]
+    end
+    
+    subgraph "Camada 2: ETL"
+        B1[Extração]
+        B2[Limpeza]
+        B3[Transformação]
+        B4[Validação]
+    end
+    
+    subgraph "Camada 3: Análise"
+        C1[Métricas KPI]
+        C2[Análise Temporal]
+        C3[Crescimento %]
+        C4[Segmentação]
+    end
+    
+    subgraph "Camada 4: Visualização"
+        D1[Streamlit App]
+        D2[Plotly Charts]
+        D3[Filtros Dinâmicos]
+        D4[Exportação]
+    end
+    
+    A1 & A2 & A3 --> B1
+    B1 --> B2 --> B3 --> B4
+    B4 --> C1 & C2 & C3 & C4
+    C1 & C2 & C3 & C4 --> D1 & D2 & D3 & D4
+```
+
+---
+
+## 🛠️ STACK TECNOLÓGICA
+
+<div align="center">
+
+| Categoria | Tecnologia | Versão | Badge | Função |
+|:---------:|:----------:|:------:|:-----:|:-------|
+| **Linguagem** | Python | ≥3.8 | ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python) | Core |
+| **Framework Web** | Streamlit | ≥1.28 | ![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red?logo=streamlit) | Interface |
+| **Manipulação** | Pandas | 1.5.3 | ![Pandas](https://img.shields.io/badge/Pandas-1.5.3-green?logo=pandas) | ETL |
+| **Visualização** | Plotly | ≥5.14 | ![Plotly](https://img.shields.io/badge/Plotly-5.14+-blue?logo=plotly) | Gráficos |
+| **Formatação** | Black | - | ![Black](https://img.shields.io/badge/code%20style-black-000000) | Padrão |
+| **Testes** | Pytest | ≥7.0 | ![Pytest](https://img.shields.io/badge/tested%20with-pytest-0A9EDC) | Qualidade |
+
+</div>
+
+---
+
+## ⚙️ INSTALAÇÃO E CONFIGURAÇÃO
+
+### Pré-requisitos
+
+```bash
+# Versões mínimas necessárias
+Python >= 3.8
+pip >= 21.0
+Git (opcional, para clonagem)
+```
+
+### Passo a Passo
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/saumelmaiapro/analyse-vendas-python.git
+cd analyse-vendas-python
+
+# 2. Crie ambiente virtual
 python -m venv venv
-source venv/bin/activate  # Linux/macOS
-# .\venv\Scripts\activate  # Windows
 
-# Instale as dependências
+# 3. Ative o ambiente
+# Windows:
+venv\Scripts\activate
+# Linux/Mac:
+source venv/bin/activate
+
+# 4. Instale dependências
 pip install -r requirements.txt
 
-# Execute a aplicação
+# 5. Execute a aplicação
 streamlit run app.py
+```
 
-Para Liderança e Negócio (Produto Final)
+### 📋 requirements.txt
 
-👉 Acesse o dashboard em produção: analys-vendas-python.streamlit.app
+```txt
+# Core Dependencies
+streamlit==1.28.0
+pandas==1.5.3
+plotly==5.14.0
+numpy==1.24.0
 
-Lá você pode:
+# Utilities
+python-dotenv==1.0.0
+openpyxl==3.1.0
+xlsxwriter==3.1.0
 
-    Visualizar os KPIs em tempo real
+# Development
+black==23.0.0
+pytest==7.4.0
+pytest-cov==4.1.0
+```
 
-    Aplicar filtros por país, produto e período
+---
 
-    Explorar os gráficos interativos
+## 📁 ESTRUTURA DO PROJETO
 
-    Validar os insights diretamente nos dados
+```
+📦 analyse-vendas-python
+├── 📂 .github/               # Configurações GitHub
+│   └── workflows/            # CI/CD Actions
+│
+├── 📂 src/                    # Código fonte
+│   ├── 📂 components/         # Componentes UI
+│   │   ├── __init__.py
+│   │   ├── kpis.py           # Cards de KPIs
+│   │   ├── charts.py         # Gráficos Plotly
+│   │   └── filters.py        # Filtros interativos
+│   │
+│   ├── 📂 analytics/          # Lógica de negócio
+│   │   ├── __init__.py
+│   │   ├── metrics.py        # Cálculo de métricas
+│   │   ├── growth.py         # Análise de crescimento
+│   │   └── segmentation.py   # Segmentação de dados
+│   │
+│   ├── 📂 utils/              # Utilitários
+│   │   ├── __init__.py
+│   │   ├── helpers.py        # Funções auxiliares
+│   │   ├── validators.py     # Validações
+│   │   └── config.py         # Configurações
+│   │
+│   └── app.py                 # Aplicação principal
+│
+├── 📂 data/                    # Dados
+│   ├── 📂 raw/                 # Dados brutos
+│   ├── 📂 processed/           # Dados tratados
+│   └── 📂 samples/             # Amostras para teste
+│
+├── 📂 tests/                    # Testes
+│   ├── test_metrics.py
+│   ├── test_growth.py
+│   └── conftest.py
+│
+├── 📂 docs/                     # Documentação
+│   └── images/                  # Imagens
+│
+├── .gitignore
+├── .env.example                 # Exemplo de variáveis
+├── README.md                     # Este arquivo
+├── requirements.txt              # Dependências
+├── LICENSE                       # MIT License
+└── Makefile                      # Comandos úteis
+```
 
-📫 Contato Profissional
+---
 
-Samuel Maia — Analista de Dados Sênior
-📍 Fortaleza, Ceará
-📱 (85) 98409-6353
-📧 smaia2@gmail.com
+## 💻 COMO UTILIZAR
 
-https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
-https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
-📝 Licença
+### 1. Preparação dos Dados
 
-Este projeto está sob a licença MIT. Isso significa que você pode usá-lo, modificá-lo e distribuí-lo livremente, desde que mantenha os créditos originais.
+```python
+# Formato esperado dos dados
+import pandas as pd
 
-⭐ Se este projeto foi útil para sua empresa ou carreira, considere dar uma estrela no GitHub!
+dados_esperados = {
+    'order_id': 'Identificador único do pedido',
+    'order_date': 'Data da venda (YYYY-MM-DD)',
+    'customer_id': 'ID do cliente',
+    'customer_name': 'Nome do cliente',
+    'product_id': 'ID do produto',
+    'product_name': 'Nome do produto',
+    'category': 'Categoria do produto',
+    'quantity': 'Quantidade vendida',
+    'unit_price': 'Preço unitário',
+    'total_price': 'Preço total',
+    'country': 'País da venda',
+    'payment_method': 'Método de pagamento'
+}
+```
 
-⭐ "Dados não são apenas números; são histórias esperando para serem contadas e problemas esperando para serem resolvidos."
+### 2. Execução do Dashboard
+
+```bash
+# Modo desenvolvimento (com hot reload)
+streamlit run src/app.py --server.port 8501
+
+# Modo produção
+streamlit run src/app.py --server.headless true --server.port 80
+```
+
+### 3. Acessando
+
+```
+🌐 Local: http://localhost:8501
+🌐 Rede: http://[SEU-IP]:8501
+```
+
+---
+
+## 📊 EXEMPLOS DE OUTPUT
+
+### 📈 Análise de Crescimento
+
+| Mês | Receita | Crescimento | Classificação | Insight Gerado |
+|-----|---------|-------------|---------------|----------------|
+| Jan/24 | R$ 100.000 | — | ⚖️ Baseline | Período base para comparações |
+| Fev/24 | R$ 120.000 | +20,0% | 🚀 ACELERAÇÃO | Campanha de verão eficaz |
+| Mar/24 | R$ 115.000 | -4,2% | 📉 NEGATIVO | Queda pós-campanha - investigar |
+| Abr/24 | R$ 125.000 | +8,7% | 📈 POSITIVO | Recuperação consistente |
+
+### 📊 Dashboard Preview
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  📊 DASHBOARD DE VENDAS                          [Filtros] ▼ │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐           │
+│  │  RECEITA    │ │ TICKET MÉDIO│ │   PEDIDOS   │           │
+│  │  R$ 1.2M    │ │   R$ 350    │ │    3.428    │           │
+│  │  ▲ +15%     │ │   ▲ +5%     │ │   ▲ +10%    │           │
+│  └─────────────┘ └─────────────┘ └─────────────┘           │
+│                                                             │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │           EVOLUÇÃO DE VENDAS - 2024                │    │
+│  │  150K ████                                          │    │
+│  │  100K ███▓████▓██▓████▓██▓████▓██▓████▓██▓████▓██  │    │
+│  │   50K ████████████████████████████████████████████  │    │
+│  │    0K ████████████████████████████████████████████  │    │
+│  │      Jan  Fev  Mar  Abr  Mai  Jun  Jul  Ago  Set   │    │
+│  └────────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🧪 TESTES E QUALIDADE
+
+### Executando Testes
+
+```bash
+# Executar todos os testes
+pytest tests/ -v
+
+# Com cobertura
+pytest tests/ --cov=src --cov-report=html
+
+# Testes específicos
+pytest tests/test_growth.py -v
+```
+
+### Padrões de Código
+
+```bash
+# Formatação com Black
+black src/ tests/
+
+# Verificação de estilo
+flake8 src/ --max-line-length=88
+
+# Type checking
+mypy src/ --ignore-missing-imports
+```
+
+---
+
+## 🚀 ROADMAP
+
+### ✅ Versão 1.0 (Concluído)
+- [x] Dashboard base com KPIs principais
+- [x] Gráficos interativos com Plotly
+- [x] Filtros dinâmicos
+- [x] Análise temporal básica
+
+### 🔄 Versão 2.0 (Em desenvolvimento)
+- [ ] Machine Learning para previsões
+- [ ] Integração com Google Analytics
+- [ ] Alertas automáticos por email
+- [ ] Exportação de relatórios
+
+### 📅 Versão 3.0 (Planejado)
+- [ ] App mobile
+- [ ] Integração com WhatsApp
+- [ ] Dashboard multicliente
+- [ ] API pública
+
+---
+
+## 🤝 COMO CONTRIBUIR
+
+### Fluxo de Contribuição
+
+```bash
+1. 🍴 Fork o projeto
+2. 🌿 Crie sua branch: `git checkout -b feature/nova-funcionalidade`
+3. 💾 Commit: `git commit -m 'Add: nova funcionalidade'`
+4. 📤 Push: `git push origin feature/nova-funcionalidade`
+5. 🔃 Abra um Pull Request
+```
+
+### Padrões de Commit
+
+| Tipo | Descrição | Exemplo |
+|:----:|:----------|:--------|
+| **Add** | Nova funcionalidade | `Add: gráfico de barras empilhadas` |
+| **Fix** | Correção de bug | `Fix: cálculo do ticket médio` |
+| **Docs** | Documentação | `Docs: atualiza README` |
+| **Style** | Formatação | `Style: aplica black` |
+| **Refactor** | Refatoração | `Refactor: otimiza query pandas` |
+| **Test** | Testes | `Test: adiciona testes growth` |
+
+---
+
+## 📄 LICENÇA
+
+Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+```
+MIT License
+
+Copyright (c) 2026 Saumel Maia
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files...
+```
+
+---
+
+## 📞 CONTATO
+
+<div align="center">
+  <h3>Saumel Maia</h3>
+  <p><i>Analista de Dados Sênior</i></p>
+  
+  <a href="mailto:smaia2@gmail.com">
+    <img src="https://img.shields.io/badge/Email-smaia2%40gmail.com-red?style=for-the-badge&logo=gmail">
+  </a>
+  
+  <a href="https://linkedin.com/in/saumelmaiapro">
+    <img src="https://img.shields.io/badge/LinkedIn-Saumel%20Maia-blue?style=for-the-badge&logo=linkedin">
+  </a>
+  
+  <a href="https://github.com/saumelmaiapro">
+    <img src="https://img.shields.io/badge/GitHub-saumelmaiapro-black?style=for-the-badge&logo=github">
+  </a>
+</div>
+
+---
+
+<div align="center">
+  <br>
+  <p>⭐️ Se este projeto te ajudou, considere dar uma estrela! ⭐️</p>
+  <br>
+  <img src="https://img.shields.io/badge/Feito%20com-Python-3776AB?style=flat-square&logo=python">
+  <img src="https://img.shields.io/badge/With-❤️-red?style=flat-square">
+  <br>
+  <br>
+  <a href="#-sumário-executivo">⬆️ Voltar ao topo</a>
+  <br>
+  <br>
+  <p><i>Desenvolvido com dedicação para a comunidade de dados</i></p>
+  <p><b>© 2026 Saumel de Andrade Maia. Todos os direitos reservados.</b></p>
+</div>
+```

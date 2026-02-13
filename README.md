@@ -1,11 +1,11 @@
 📊 Dashboard de Análise de Vendas — Solução Completa para Inteligência de Negócio
 
-https://img.shields.io/badge/Python-3.8%252B-blue?logo=python&logoColor=white
-https://img.shields.io/badge/Streamlit-1.28+-red?logo=streamlit&logoColor=white
-https://img.shields.io/badge/Pandas-1.5.3-green?logo=pandas&logoColor=white
-https://img.shields.io/badge/Plotly-5.14+-blue?logo=plotly&logoColor=white
-https://img.shields.io/github/last-commit/samuelmaiapro/analise-vendas-python
-https://img.shields.io/badge/License-MIT-yellow.svg
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white) 
+![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red?logo=streamlit&logoColor=white) 
+![Pandas](https://img.shields.io/badge/Pandas-1.5.3-green?logo=pandas&logoColor=white) 
+![Plotly](https://img.shields.io/badge/Plotly-5.14+-blue?logo=plotly&logoColor=white) 
+![Last Commit](https://img.shields.io/github/last-commit/saumelmaiapro/analyse-vendas-python) 
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
     🔗 Acesse o aplicativo em produção: analys-vendas-python.streamlit.app
     📁 Repositório oficial: github.com/samuelmaiapro/analise-vendas-python

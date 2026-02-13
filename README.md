@@ -1,27 +1,27 @@
+Vejo os erros! Vou corrigir todo o conteúdo com a formatação correta:
+
 ```markdown
 <div align="center">
-  <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-green?style=for-the-badge" alt="Status">
-  <img src="https://img.shields.io/badge/Versão-2.0.0-blue?style=for-the-badge" alt="Versão">
+    <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-green?style=for-the-badge" alt="Status">
+    <img src="https://img.shields.io/badge/Versão-2.0.0-blue?style=for-the-badge" alt="Versão">
 </div>
 
 <br>
 
 <div align="center">
-  <h1>📊 DASHBOARD DE ANÁLISE DE VENDAS</h1>
-  <h3>Solução Completa para Inteligência de Negócio</h3>
-  <p><i>Transformando dados brutos em decisões estratégicas</i></p>
+    <h1>📊 DASHBOARD DE ANÁLISE DE VENDAS</h1>
+    <h3>Solução Completa para Inteligência de Negócio</h3>
+    <p><i>Transformando dados brutos em decisões estratégicas</i></p>
 </div>
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white&style=flat-square">
-  <img src="https://img.shields.io/badge/Streamlit-1.28+-red?logo=streamlit&logoColor=white&style=flat-square">
-  <img src="https://img.shields.io/badge/Pandas-1.5.3-green?logo=pandas&logoColor=white&style=flat-square">
-  <img src="https://img.shields.io/badge/Plotly-5.14+-blue?logo=plotly&logoColor=white&style=flat-square">
-  <img src="https://img.shields.io/github/last-commit/saumelmaiapro/analyse-vendas-python?style=flat-square">
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square">
+    <img src="https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white&style=flat-square" alt="Python">
+    <img src="https://img.shields.io/badge/Streamlit-1.28+-red?logo=streamlit&logoColor=white&style=flat-square" alt="Streamlit">
+    <img src="https://img.shields.io/badge/Pandas-1.5.3-green?logo=pandas&logoColor=white&style=flat-square" alt="Pandas">
+    <img src="https://img.shields.io/badge/Plotly-5.14+-blue?logo=plotly&logoColor=white&style=flat-square" alt="Plotly">
+    <img src="https://img.shields.io/github/last-commit/saumelmaiapro/analyse-vendas-python?style=flat-square" alt="Last Commit">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="License">
 </div>
-
-<br>
 
 ---
 
@@ -75,12 +75,16 @@ KPI_DASHBOARD = {
 }
 ```
 
-| KPI | Fórmula | O que revela | Aplicação |
-|:----|:--------|:-------------|:----------|
-| **Receita Total** | Soma de todas as vendas | Saúde financeira geral | Planejamento orçamentário |
-| **Ticket Médio** | Receita / Pedidos | Poder de compra dos clientes | Estratégias de upselling |
-| **Total de Pedidos** | Contagem de transações | Volume de vendas | Avaliação de demanda |
-| **Clientes Ativos** | Clientes únicos | Base de clientes | Retenção e aquisição |
+<div align="center">
+
+| KPI | Fórmula | Descrição | Impacto |
+|:----|:--------|:----------|:--------|
+| **Receita Total** | `∑(preço * quantidade)` | Soma de todas as vendas | Visão macro do faturamento |
+| **Ticket Médio** | `receita_total / total_pedidos` | Valor médio por transação | Avalia poder de compra |
+| **Total de Pedidos** | `COUNT(order_id)` | Número de transações | Mede volume de vendas |
+| **Clientes Ativos** | `COUNT(DISTINCT customer_id)` | Clientes que compraram | Tamanho da base |
+
+</div>
 
 ### 📈 2. ANÁLISE TEMPORAL
 
@@ -90,103 +94,149 @@ KPI_DASHBOARD = {
 |:-------:|:------------:|:-----------------|:-------------------|
 | **Diário** | Linha do tempo | Picos e quedas diárias | Ajustes operacionais |
 | **Mensal** | Comparativo mensal | Tendências de crescimento | Planejamento de metas |
-| **Trimestral** | Sazonalidade | Padrões recorrentes | Estratégias sazonais |
+| **Trimestral** | Análise sazonal | Padrões recorrentes | Estratégias sazonais |
 | **Anual** | Year-over-Year | Crescimento real | Planejamento estratégico |
 
 </div>
 
+```python
+def analise_temporal(df, periodo='M'):
+    """
+    Análise de vendas ao longo do tempo
+    
+    Args:
+        df: DataFrame com dados de venda
+        periodo: 'D' diário, 'M' mensal, 'Q' trimestral, 'Y' anual
+    
+    Returns:
+        DataFrame com evolução temporal
+    """
+    df_temporal = df.set_index('data').resample(periodo).agg({
+        'receita': 'sum',
+        'pedido_id': 'count',
+        'cliente_id': 'nunique'
+    }).reset_index()
+    
+    df_temporal['crescimento'] = df_temporal['receita'].pct_change() * 100
+    
+    return df_temporal
+```
+
 ### 🏷️ 3. PERFORMANCE DE PRODUTOS
 
 ```python
-# Ranking de produtos
-top_produtos = df.groupby('produto').agg({
-    'receita': 'sum',
-    'quantidade': 'sum',
-    'pedidos': 'nunique'
-}).sort_values('receita', ascending=False)
-
-# Análise de categorias
-categorias = df.groupby('categoria').agg({
-    'receita': ['sum', 'mean'],
-    'produto': 'nunique'
-})
+def ranking_produtos(df):
+    """
+    Ranking de produtos mais lucrativos
+    """
+    ranking = df.groupby(['categoria', 'produto']).agg({
+        'receita': 'sum',
+        'quantidade': 'sum',
+        'pedido_id': 'nunique'
+    }).round(2)
+    
+    ranking.columns = ['receita_total', 'unidades_vendidas', 'total_pedidos']
+    ranking = ranking.sort_values('receita_total', ascending=False)
+    ranking['participacao'] = (ranking['receita_total'] / ranking['receita_total'].sum() * 100).round(1)
+    
+    return ranking
 ```
+
+<div align="center">
+
+| Categoria | Produto | Receita | Unidades | Participação |
+|:---------:|:--------|--------:|---------:|:------------:|
+| Eletrônicos | Notebook Pro | R$ 150.000 | 50 | 25% |
+| Vestuário | Camisa Social | R$ 45.000 | 450 | 7,5% |
+| Alimentos | Café Gourmet | R$ 30.000 | 600 | 5% |
+
+</div>
 
 ### 🌍 4. ANÁLISE GEOGRÁFICA
 
-- **Mapas de calor** por região/país
-- **Concentração** de vendas
-- **Oportunidades** de expansão
-- **Performance** por mercado
-
-### 🎯 5. SEGMENTAÇÃO AVANÇADA
-
-- Por comportamento de compra
-- Por valor de transação
-- Por frequência de compras
-- Por localização geográfica
+```python
+def analise_geografica(df):
+    """
+    Distribuição geográfica das vendas
+    """
+    geo_analise = df.groupby('pais').agg({
+        'receita': 'sum',
+        'cliente_id': 'nunique',
+        'pedido_id': 'count'
+    }).reset_index()
+    
+    geo_analise.columns = ['país', 'receita_total', 'clientes', 'pedidos']
+    geo_analise['ticket_medio'] = (geo_analise['receita_total'] / geo_analise['pedidos']).round(2)
+    
+    return geo_analise.sort_values('receita_total', ascending=False)
+```
 
 ---
 
 ## 📈 MÉTRICA DE CRESCIMENTO (DIFERENCIAL ESTRATÉGICO)
 
-### 🧠 O Diferencial Competitivo
+### O Diferencial Competitivo
 
 Enquanto dashboards convencionais mostram **apenas o que aconteceu**, nossa solução responde:
 
 <div align="center">
 
-| ❓ Pergunta | 📊 Resposta | 💡 Impacto |
-|:-----------:|:-----------:|:----------:|
-| O que aconteceu? | Dados brutos e históricos | Visão reativa |
-| **Por que aconteceu?** | **Análise de correlação** | **Diagnóstico** |
-| **O que significa?** | **Contextualização** | **Interpretação** |
-| **Para onde vamos?** | **Tendências e projeções** | **Estratégia proativa** |
+| Nível | Pergunta | Resposta | Ação |
+|:-----:|:--------:|:--------:|:----:|
+| **Básico** | O que aconteceu? | Dados brutos | Visão reativa |
+| **Intermediário** | Por que aconteceu? | Análise de correlação | Diagnóstico |
+| **Avançado** | O que significa? | Contextualização | Interpretação |
+| **Estratégico** | Para onde vamos? | Tendências e projeções | Ação proativa |
 
 </div>
 
-### 💻 Implementação Técnica
+### Implementação Técnica
 
 ```python
-class AnaliseCrescimento:
+class MetricasCrescimento:
     """
     Classe responsável pela análise avançada de crescimento
     """
     
-    def __init__(self, dataframe):
-        self.df = dataframe
-        self.calcular_metricas()
+    def __init__(self, df):
+        self.df = df
+        self.df_mensal = self._agregar_mensal()
     
-    def calcular_crescimento_mensal(self):
+    def _agregar_mensal(self):
+        """Agrega dados por mês"""
+        return (self.df
+                .set_index('data')
+                .resample('M')['receita']
+                .sum()
+                .reset_index())
+    
+    def calcular_crescimento(self):
         """
         Calcula crescimento percentual mês a mês
         """
-        # Agregação mensal
-        df_mensal = (self.df
-                     .set_index('data')
-                     .resample('M')['receita']
-                     .sum()
-                     .reset_index())
-        
-        # Cálculo do crescimento
-        df_mensal['crescimento_%'] = df_mensal['receita'].pct_change() * 100
+        df = self.df_mensal.copy()
+        df['crescimento_%'] = df['receita'].pct_change() * 100
+        df['crescimento_%'] = df['crescimento_%'].round(1)
         
         # Classificação inteligente
-        df_mensal['classificacao'] = df_mensal['crescimento_%'].apply(
-            lambda x: '🚀 ACELERAÇÃO' if x > 10 
-            else '📈 POSITIVO' if x > 0 
-            else '📉 NEGATIVO' if x < 0 
-            else '⚖️ ESTÁVEL'
-        )
+        conditions = [
+            df['crescimento_%'] > 10,
+            df['crescimento_%'] > 0,
+            df['crescimento_%'] < 0
+        ]
+        choices = ['🚀 Aceleração', '📈 Positivo', '📉 Negativo']
+        df['status'] = np.select(conditions, choices, default='⚖️ Estável')
         
-        # Insight automático
-        df_mensal['insight'] = df_mensal.apply(self._gerar_insight, axis=1)
+        # Insights automáticos
+        df['insight'] = df.apply(self._gerar_insight, axis=1)
         
-        return df_mensal
+        return df
     
     def _gerar_insight(self, row):
-        """Gera insights automáticos baseados nos dados"""
-        if row['crescimento_%'] > 15:
+        """Gera insights baseados nos dados"""
+        if pd.isna(row['crescimento_%']):
+            return "Período base"
+        elif row['crescimento_%'] > 15:
             return "Crescimento expressivo - Investigar causas para replicar"
         elif row['crescimento_%'] < -10:
             return "Queda significativa - Ação corretiva necessária"
@@ -196,43 +246,55 @@ class AnaliseCrescimento:
             return "Tendência normal de mercado"
 ```
 
+### 📊 Exemplo de Output
+
+<div align="center">
+
+| Mês | Receita | Crescimento | Status | Insight |
+|:---:|--------:|------------:|:------:|:--------|
+| Jan/24 | R$ 100.000 | - | ⚖️ Baseline | Período base |
+| Fev/24 | R$ 120.000 | +20,0% | 🚀 Aceleração | Campanha eficaz - replicar |
+| Mar/24 | R$ 115.000 | -4,2% | 📉 Negativo | Queda pós-campanha - investigar |
+| Abr/24 | R$ 125.000 | +8,7% | 📈 Positivo | Recuperação consistente |
+
+</div>
+
 ---
 
 ## 🏗️ ARQUITETURA DA SOLUÇÃO
 
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    ARQUITETURA DO DASHBOARD                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐  │
+│  │   CAMADA 1   │    │   CAMADA 2   │    │   CAMADA 3   │  │
+│  │   DADOS      │───▶│   PROCESSO   │───▶│  VISÃO       │  │
+│  └──────────────┘    └──────────────┘    └──────────────┘  │
+│         │                   │                   │           │
+│         ▼                   ▼                   ▼           │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐  │
+│  │ • CSVs       │    │ • Pandas     │    │ • Streamlit  │  │
+│  │ • Excel      │    │ • Limpeza    │    │ • Plotly     │  │
+│  │ • APIs       │    │ • Agregação  │    │ • KPIs       │  │
+│  │ • SQL        │    │ • Validação  │    │ • Filtros    │  │
+│  └──────────────┘    └──────────────┘    └──────────────┘  │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Fluxo de Dados
+
 ```mermaid
-graph TB
-    subgraph "Camada 1: Fontes de Dados"
-        A1[(CSV/Excel)]
-        A2[(API REST)]
-        A3[(Banco SQL)]
-    end
-    
-    subgraph "Camada 2: ETL"
-        B1[Extração]
-        B2[Limpeza]
-        B3[Transformação]
-        B4[Validação]
-    end
-    
-    subgraph "Camada 3: Análise"
-        C1[Métricas KPI]
-        C2[Análise Temporal]
-        C3[Crescimento %]
-        C4[Segmentação]
-    end
-    
-    subgraph "Camada 4: Visualização"
-        D1[Streamlit App]
-        D2[Plotly Charts]
-        D3[Filtros Dinâmicos]
-        D4[Exportação]
-    end
-    
-    A1 & A2 & A3 --> B1
-    B1 --> B2 --> B3 --> B4
-    B4 --> C1 & C2 & C3 & C4
-    C1 & C2 & C3 & C4 --> D1 & D2 & D3 & D4
+graph LR
+    A[Dados Brutos] --> B[ETL - Pandas]
+    B --> C[Métricas]
+    B --> D[Análises]
+    C --> E[Streamlit]
+    D --> E
+    E --> F[Visualização]
+    E --> G[Exportação]
 ```
 
 ---
@@ -241,14 +303,13 @@ graph TB
 
 <div align="center">
 
-| Categoria | Tecnologia | Versão | Badge | Função |
-|:---------:|:----------:|:------:|:-----:|:-------|
-| **Linguagem** | Python | ≥3.8 | ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python) | Core |
-| **Framework Web** | Streamlit | ≥1.28 | ![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red?logo=streamlit) | Interface |
-| **Manipulação** | Pandas | 1.5.3 | ![Pandas](https://img.shields.io/badge/Pandas-1.5.3-green?logo=pandas) | ETL |
+| Categoria | Tecnologia | Versão | Badge | Finalidade |
+|:---------:|:----------:|:------:|:-----:|:-----------|
+| **Linguagem** | Python | ≥3.8 | ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python) | Core da aplicação |
+| **Framework** | Streamlit | ≥1.28 | ![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red?logo=streamlit) | Interface web |
+| **Manipulação** | Pandas | 1.5.3 | ![Pandas](https://img.shields.io/badge/Pandas-1.5.3-green?logo=pandas) | ETL e análises |
 | **Visualização** | Plotly | ≥5.14 | ![Plotly](https://img.shields.io/badge/Plotly-5.14+-blue?logo=plotly) | Gráficos |
-| **Formatação** | Black | - | ![Black](https://img.shields.io/badge/code%20style-black-000000) | Padrão |
-| **Testes** | Pytest | ≥7.0 | ![Pytest](https://img.shields.io/badge/tested%20with-pytest-0A9EDC) | Qualidade |
+| **Formatação** | Black | - | ![Black](https://img.shields.io/badge/code%20style-black-000000) | Padrão de código |
 
 </div>
 
@@ -259,10 +320,10 @@ graph TB
 ### Pré-requisitos
 
 ```bash
-# Versões mínimas necessárias
+# Versões necessárias
 Python >= 3.8
 pip >= 21.0
-Git (opcional, para clonagem)
+Git (opcional)
 ```
 
 ### Passo a Passo
@@ -284,14 +345,14 @@ source venv/bin/activate
 # 4. Instale dependências
 pip install -r requirements.txt
 
-# 5. Execute a aplicação
+# 5. Execute
 streamlit run app.py
 ```
 
 ### 📋 requirements.txt
 
 ```txt
-# Core Dependencies
+# Core
 streamlit==1.28.0
 pandas==1.5.3
 plotly==5.14.0
@@ -305,7 +366,6 @@ xlsxwriter==3.1.0
 # Development
 black==23.0.0
 pytest==7.4.0
-pytest-cov==4.1.0
 ```
 
 ---
@@ -314,88 +374,60 @@ pytest-cov==4.1.0
 
 ```
 📦 analyse-vendas-python
-├── 📂 .github/               # Configurações GitHub
-│   └── workflows/            # CI/CD Actions
-│
-├── 📂 src/                    # Código fonte
-│   ├── 📂 components/         # Componentes UI
-│   │   ├── __init__.py
-│   │   ├── kpis.py           # Cards de KPIs
-│   │   ├── charts.py         # Gráficos Plotly
-│   │   └── filters.py        # Filtros interativos
-│   │
-│   ├── 📂 analytics/          # Lógica de negócio
-│   │   ├── __init__.py
-│   │   ├── metrics.py        # Cálculo de métricas
-│   │   ├── growth.py         # Análise de crescimento
-│   │   └── segmentation.py   # Segmentação de dados
-│   │
-│   ├── 📂 utils/              # Utilitários
-│   │   ├── __init__.py
-│   │   ├── helpers.py        # Funções auxiliares
-│   │   ├── validators.py     # Validações
-│   │   └── config.py         # Configurações
-│   │
-│   └── app.py                 # Aplicação principal
-│
-├── 📂 data/                    # Dados
-│   ├── 📂 raw/                 # Dados brutos
-│   ├── 📂 processed/           # Dados tratados
-│   └── 📂 samples/             # Amostras para teste
-│
-├── 📂 tests/                    # Testes
-│   ├── test_metrics.py
-│   ├── test_growth.py
-│   └── conftest.py
-│
-├── 📂 docs/                     # Documentação
-│   └── images/                  # Imagens
-│
+├── 📂 src/
+│   ├── 📂 components/
+│   │   ├── kpis.py
+│   │   ├── charts.py
+│   │   └── filters.py
+│   ├── 📂 analytics/
+│   │   ├── metrics.py
+│   │   ├── growth.py
+│   │   └── segmentation.py
+│   ├── 📂 utils/
+│   │   ├── helpers.py
+│   │   └── validators.py
+│   └── app.py
+├── 📂 data/
+│   ├── raw/
+│   └── processed/
+├── 📂 tests/
 ├── .gitignore
-├── .env.example                 # Exemplo de variáveis
-├── README.md                     # Este arquivo
-├── requirements.txt              # Dependências
-├── LICENSE                       # MIT License
-└── Makefile                      # Comandos úteis
+├── README.md
+├── requirements.txt
+└── LICENSE
 ```
 
 ---
 
 ## 💻 COMO UTILIZAR
 
-### 1. Preparação dos Dados
+### Preparação dos Dados
 
 ```python
-# Formato esperado dos dados
-import pandas as pd
-
-dados_esperados = {
-    'order_id': 'Identificador único do pedido',
-    'order_date': 'Data da venda (YYYY-MM-DD)',
-    'customer_id': 'ID do cliente',
-    'customer_name': 'Nome do cliente',
-    'product_id': 'ID do produto',
-    'product_name': 'Nome do produto',
-    'category': 'Categoria do produto',
-    'quantity': 'Quantidade vendida',
-    'unit_price': 'Preço unitário',
-    'total_price': 'Preço total',
-    'country': 'País da venda',
-    'payment_method': 'Método de pagamento'
+# Formato esperado
+dados = {
+    'data': '2024-01-15',
+    'produto': 'Notebook Pro',
+    'categoria': 'Eletrônicos',
+    'quantidade': 2,
+    'preco_unitario': 3500.00,
+    'receita': 7000.00,
+    'cliente_id': 'CUST-001',
+    'pais': 'Brasil'
 }
 ```
 
-### 2. Execução do Dashboard
+### Execução
 
 ```bash
-# Modo desenvolvimento (com hot reload)
+# Desenvolvimento
 streamlit run src/app.py --server.port 8501
 
-# Modo produção
-streamlit run src/app.py --server.headless true --server.port 80
+# Produção
+streamlit run src/app.py --server.headless true
 ```
 
-### 3. Acessando
+### Acesso
 
 ```
 🌐 Local: http://localhost:8501
@@ -404,167 +436,93 @@ streamlit run src/app.py --server.headless true --server.port 80
 
 ---
 
-## 📊 EXEMPLOS DE OUTPUT
-
-### 📈 Análise de Crescimento
-
-| Mês | Receita | Crescimento | Classificação | Insight Gerado |
-|-----|---------|-------------|---------------|----------------|
-| Jan/24 | R$ 100.000 | — | ⚖️ Baseline | Período base para comparações |
-| Fev/24 | R$ 120.000 | +20,0% | 🚀 ACELERAÇÃO | Campanha de verão eficaz |
-| Mar/24 | R$ 115.000 | -4,2% | 📉 NEGATIVO | Queda pós-campanha - investigar |
-| Abr/24 | R$ 125.000 | +8,7% | 📈 POSITIVO | Recuperação consistente |
-
-### 📊 Dashboard Preview
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  📊 DASHBOARD DE VENDAS                          [Filtros] ▼ │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐           │
-│  │  RECEITA    │ │ TICKET MÉDIO│ │   PEDIDOS   │           │
-│  │  R$ 1.2M    │ │   R$ 350    │ │    3.428    │           │
-│  │  ▲ +15%     │ │   ▲ +5%     │ │   ▲ +10%    │           │
-│  └─────────────┘ └─────────────┘ └─────────────┘           │
-│                                                             │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │           EVOLUÇÃO DE VENDAS - 2024                │    │
-│  │  150K ████                                          │    │
-│  │  100K ███▓████▓██▓████▓██▓████▓██▓████▓██▓████▓██  │    │
-│  │   50K ████████████████████████████████████████████  │    │
-│  │    0K ████████████████████████████████████████████  │    │
-│  │      Jan  Fev  Mar  Abr  Mai  Jun  Jul  Ago  Set   │    │
-│  └────────────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
 ## 🧪 TESTES E QUALIDADE
 
-### Executando Testes
-
 ```bash
-# Executar todos os testes
+# Executar testes
 pytest tests/ -v
 
 # Com cobertura
 pytest tests/ --cov=src --cov-report=html
 
-# Testes específicos
-pytest tests/test_growth.py -v
-```
-
-### Padrões de Código
-
-```bash
-# Formatação com Black
+# Formatação
 black src/ tests/
-
-# Verificação de estilo
-flake8 src/ --max-line-length=88
-
-# Type checking
-mypy src/ --ignore-missing-imports
 ```
 
 ---
 
 ## 🚀 ROADMAP
 
-### ✅ Versão 1.0 (Concluído)
-- [x] Dashboard base com KPIs principais
-- [x] Gráficos interativos com Plotly
+### ✅ Versão 1.0
+- [x] Dashboard base com KPIs
+- [x] Gráficos interativos
 - [x] Filtros dinâmicos
-- [x] Análise temporal básica
 
-### 🔄 Versão 2.0 (Em desenvolvimento)
-- [ ] Machine Learning para previsões
-- [ ] Integração com Google Analytics
-- [ ] Alertas automáticos por email
+### 🔄 Versão 2.0
+- [ ] Machine Learning
+- [ ] Alertas automáticos
 - [ ] Exportação de relatórios
 
-### 📅 Versão 3.0 (Planejado)
+### 📅 Versão 3.0
 - [ ] App mobile
-- [ ] Integração com WhatsApp
-- [ ] Dashboard multicliente
 - [ ] API pública
+- [ ] Integração WhatsApp
 
 ---
 
 ## 🤝 COMO CONTRIBUIR
 
-### Fluxo de Contribuição
-
-```bash
-1. 🍴 Fork o projeto
-2. 🌿 Crie sua branch: `git checkout -b feature/nova-funcionalidade`
-3. 💾 Commit: `git commit -m 'Add: nova funcionalidade'`
-4. 📤 Push: `git push origin feature/nova-funcionalidade`
-5. 🔃 Abra um Pull Request
-```
+1. **Fork** o projeto
+2. **Branch**: `git checkout -b feature/nova-funcionalidade`
+3. **Commit**: `git commit -m 'Add: nova funcionalidade'`
+4. **Push**: `git push origin feature/nova-funcionalidade`
+5. **Pull Request**
 
 ### Padrões de Commit
 
-| Tipo | Descrição | Exemplo |
-|:----:|:----------|:--------|
-| **Add** | Nova funcionalidade | `Add: gráfico de barras empilhadas` |
-| **Fix** | Correção de bug | `Fix: cálculo do ticket médio` |
-| **Docs** | Documentação | `Docs: atualiza README` |
-| **Style** | Formatação | `Style: aplica black` |
-| **Refactor** | Refatoração | `Refactor: otimiza query pandas` |
-| **Test** | Testes | `Test: adiciona testes growth` |
+- `Add:` - Nova funcionalidade
+- `Fix:` - Correção
+- `Docs:` - Documentação
+- `Style:` - Formatação
+- `Refactor:` - Refatoração
 
 ---
 
 ## 📄 LICENÇA
 
-Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
-```
-MIT License
-
-Copyright (c) 2026 Saumel Maia
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files...
-```
+MIT License © 2026 Saumel Maia
 
 ---
 
 ## 📞 CONTATO
 
 <div align="center">
-  <h3>Saumel Maia</h3>
-  <p><i>Analista de Dados Sênior</i></p>
-  
-  <a href="mailto:smaia2@gmail.com">
-    <img src="https://img.shields.io/badge/Email-smaia2%40gmail.com-red?style=for-the-badge&logo=gmail">
-  </a>
-  
-  <a href="https://linkedin.com/in/saumelmaiapro">
-    <img src="https://img.shields.io/badge/LinkedIn-Saumel%20Maia-blue?style=for-the-badge&logo=linkedin">
-  </a>
-  
-  <a href="https://github.com/saumelmaiapro">
-    <img src="https://img.shields.io/badge/GitHub-saumelmaiapro-black?style=for-the-badge&logo=github">
-  </a>
+    <h3>Saumel Maia</h3>
+    <p><i>Analista de Dados Sênior</i></p>
+    
+    <a href="mailto:smaia2@gmail.com">
+        <img src="https://img.shields.io/badge/Email-smaia2%40gmail.com-red?style=for-the-badge&logo=gmail">
+    </a>
+    
+    <a href="https://linkedin.com/in/saumelmaiapro">
+        <img src="https://img.shields.io/badge/LinkedIn-Saumel%20Maia-blue?style=for-the-badge&logo=linkedin">
+    </a>
+    
+    <a href="https://github.com/saumelmaiapro">
+        <img src="https://img.shields.io/badge/GitHub-saumelmaiapro-black?style=for-the-badge&logo=github">
+    </a>
 </div>
 
 ---
 
 <div align="center">
-  <br>
-  <p>⭐️ Se este projeto te ajudou, considere dar uma estrela! ⭐️</p>
-  <br>
-  <img src="https://img.shields.io/badge/Feito%20com-Python-3776AB?style=flat-square&logo=python">
-  <img src="https://img.shields.io/badge/With-❤️-red?style=flat-square">
-  <br>
-  <br>
-  <a href="#-sumário-executivo">⬆️ Voltar ao topo</a>
-  <br>
-  <br>
-  <p><i>Desenvolvido com dedicação para a comunidade de dados</i></p>
-  <p><b>© 2026 Saumel Maia. Todos os direitos reservados.</b></p>
+    <br>
+    <p>⭐️ Se este projeto te ajudou, considere dar uma estrela! ⭐️</p>
+    <br>
+    <a href="#-dashboard-de-análise-de-vendas">⬆️ Voltar ao topo</a>
+    <br>
+    <br>
+    <p><i>Desenvolvido com dedicação para a comunidade de dados</i></p>
 </div>
 ```
+

@@ -13,10 +13,18 @@
 </div>
 
 <div align="center">
-    <img src="https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white&style=flat-square" alt="Python">
-    <img src="https://img.shields.io/badge/Streamlit-1.28+-red?logo=streamlit&logoColor=white&style=flat-square" alt="Streamlit">
-    <img src="https://img.shields.io/badge/Pandas-1.5.3-green?logo=pandas&logoColor=white&style=flat-square" alt="Pandas">
-    <img src="https://img.shields.io/badge/Plotly-5.14+-blue?logo=plotly&logoColor=white&style=flat-square" alt="Plotly">
+    <a href="https://www.python.org/">
+        <img src="https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white&style=flat-square" alt="Python">
+    </a>
+    <a href="https://streamlit.io/">
+        <img src="https://img.shields.io/badge/Streamlit-1.28+-red?logo=streamlit&logoColor=white&style=flat-square" alt="Streamlit">
+    </a>
+    <a href="https://pandas.pydata.org/">
+        <img src="https://img.shields.io/badge/Pandas-1.5.3-green?logo=pandas&logoColor=white&style=flat-square" alt="Pandas">
+    </a>
+    <a href="https://plotly.com/">
+        <img src="https://img.shields.io/badge/Plotly-5.14+-blue?logo=plotly&logoColor=white&style=flat-square" alt="Plotly">
+    </a>
     <img src="https://img.shields.io/github/last-commit/samuelmaiapro/analise-vendas-python?style=flat-square" alt="Last Commit">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="License">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome">
@@ -31,14 +39,14 @@
     <a href="#-arquitetura">Arquitetura</a> •
     <a href="#-stack-tecnológica">Stack</a> •
     <a href="#-instalação">Instalação</a> •
-    <a href="#-como-contribuir">Contribuir</a>
+    <a href="#-sobre-o-autor">Sobre o Autor</a>
 </div>
 
 ---
 
 ## 📋 SOBRE O PROJETO
 
-Este dashboard foi desenvolvido para **empresas que buscam excelência em análise de dados**, oferecendo uma visão **360° do negócio** com métricas estratégicas e insights acionáveis.
+Este dashboard foi desenvolvido para **empresas que buscam excelência em análise de dados**, oferecendo uma visão **360° do negócio** com métricas estratégicas e insights acionáveis, similar ao que um **Analista de Dados Sênior** entregaria.
 
 ### 🎯 Problema que Resolvemos
 
@@ -58,9 +66,9 @@ Este dashboard foi desenvolvido para **empresas que buscam excelência em análi
 dashboard_metrics = {
     'visao_executiva': 'KPIs consolidados em tempo real',
     'analise_temporal': 'Evolução diária, mensal e anual',
-    'performance_produtos': 'Ranking e categorização',
-    'analise_geografica': 'Distribuição por região',
-    'metricas_crescimento': 'Análise preditiva e comparativa',
+    'performance_produtos': 'Ranking e categorização (Matriz BCG)',
+    'analise_geografica': 'Distribuição por região e priorização de mercados',
+    'metricas_crescimento': 'Análise preditiva e comparativa (WoW, MoM, YoY)',
     'insights_automaticos': 'Recomendações baseadas em dados'
 }
 ```
@@ -73,7 +81,7 @@ dashboard_metrics = {
 | **⚡ Performance** | Processamento otimizado com Pandas | Respostas em milissegundos |
 | **📈 Escalabilidade** | Arquitetura preparada para crescimento | Suporta milhões de registros |
 | **🔒 Segurança** | Validações e tratamento de erros | Dados sempre protegidos |
-| **💡 Insights** | IA generativa de recomendações | Ações proativas |
+| **💡 Insights** | Geração automática de recomendações de negócio | Ações proativas e estratégicas |
 
 ---
 
@@ -325,12 +333,12 @@ class AnalistaSenior:
 
 ```mermaid
 graph TD
-    A[Fontes de Dados] --> B[Camada de Ingestão]
-    B --> C[Processamento com Pandas]
-    C --> D[Cache em Memória]
-    D --> E[Interface Streamlit]
-    E --> F[Visualizações Plotly]
-    E --> G[Exportação de Relatórios]
+    A[Fontes de Dados<br>CSV/Excel/DB] --> B[Camada de Ingestão<br>data_loader.py]
+    B --> C[Processamento<br>Pandas/Numpy]
+    C --> D[Cache em Memória<br>Streamlit State]
+    D --> E[Interface<br>Streamlit App]
+    E --> F[Visualizações<br>Plotly]
+    E --> G[Exportação<br>Excel/CSV]
     
     style A fill:#f9f,stroke:#333,stroke-width:2px
     style C fill:#bbf,stroke:#333,stroke-width:2px
@@ -384,61 +392,62 @@ streamlit run app.py
 ```
 analise-vendas-python/
 │
-├── 📂 data/                  # Dados de exemplo e processados
-├── 📂 src/                   # Código fonte
-│   ├── 📄 app.py              # Aplicação principal
-│   ├── 📂 modules/            # Módulos do dashboard
-│   │   ├── 📄 kpi_dashboard.py
-│   │   ├── 📄 analise_temporal.py
-│   │   ├── 📄 performance_produtos.py
-│   │   ├── 📄 analise_geografica.py
-│   │   └── 📄 insights_avancados.py
-│   ├── 📂 utils/              # Utilitários
-│   │   ├── 📄 data_loader.py
-│   │   └── 📄 helpers.py
-│   └── 📂 assets/             # Recursos estáticos
+├── 📂 data/                      # Dados de exemplo e processados
+│   └── 📄 vendas_exemplo.csv      # Dataset para teste
 │
-├── 📄 requirements.txt        # Dependências
-├── 📄 README.md               # Documentação
-└── 📄 .gitignore              # Arquivos ignorados
+├── 📂 src/                       # Código fonte
+│   ├── 📄 app.py                  # Aplicação principal Streamlit
+│   │
+│   ├── 📂 modules/                # Módulos do dashboard
+│   │   ├── 📄 kpi_dashboard.py     # Classe KPIDashboard
+│   │   ├── 📄 analise_temporal.py  # Funções de análise temporal
+│   │   ├── 📄 performance_produtos.py # Matriz BCG
+│   │   ├── 📄 analise_geografica.py # Análise por região
+│   │   └── 📄 insights_avancados.py # Classe AnalistaSenior
+│   │
+│   ├── 📂 utils/                  # Utilitários
+│   │   ├── 📄 data_loader.py       # Carregamento de dados
+│   │   └── 📄 helpers.py           # Funções auxiliares
+│   │
+│   └── 📂 assets/                 # Recursos estáticos (imagens, css)
+│
+├── 📄 requirements.txt            # Dependências do projeto
+├── 📄 README.md                   # Documentação principal
+└── 📄 .gitignore                  # Arquivos ignorados pelo Git
 ```
+
+---
+
+## 👨‍💻 SOBRE O AUTOR
+
+Este projeto foi desenvolvido por **Samuel Maia**, um profissional com visão de **Analista de Dados Sênior**, apaixonado por transformar dados em decisões estratégicas de negócio.
+
+*   **GitHub:** [samuelmaiapro](https://github.com/samuelmaiapro)
+*   **LinkedIn:** [in/samuelmaiapro](https://linkedin.com/in/samuelmaiapro)
+
+Sinta-se à vontade para se conectar e acompanhar meus projetos!
 
 ---
 
 ## 🤝 COMO CONTRIBUIR
 
-Contribuições são sempre bem-vindas! Siga os passos abaixo:
+Contribuições são sempre bem-vindas! Se você tem uma ideia para um novo módulo de análise ou uma melhoria, siga os passos:
 
-1. **Fork** o projeto
-2. Crie uma **branch** para sua feature (`git checkout -b feature/NovaFeature`)
-3. **Commit** suas mudanças (`git commit -m 'Adiciona nova feature'`)
-4. **Push** para a branch (`git push origin feature/NovaFeature`)
-5. Abra um **Pull Request**
-
-### 📋 Diretrizes
-
-- Mantenha o código limpo e documentado
-- Siga as boas práticas de Python (PEP 8)
-- Adicione testes para novas funcionalidades
-- Atualize a documentação conforme necessário
+1.  Faça um **Fork** do projeto.
+2.  Crie uma **Branch** para sua feature (`git checkout -b feature/AmazingFeature`).
+3.  Faça o **Commit** das suas mudanças (`git commit -m 'Add some AmazingFeature'`).
+4.  Faça o **Push** para a Branch (`git push origin feature/AmazingFeature`).
+5.  Abra um **Pull Request**.
 
 ---
 
 ## 📄 LICENÇA
 
-Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
-
----
-
-## 📞 CONTATO
-
-Samuel Maia - [@samuelmaiapro](https://github.com/samuelmaiapro)
-
-Link do Projeto: [https://github.com/samuelmaiapro/analise-vendas-python](https://github.com/samuelmaiapro/analise-vendas-python)
+Distribuído sob a licença MIT. Veja o arquivo `LICENSE` para mais informações.
 
 ---
 
 <div align="center">
-    <p>⭐️ Se este projeto te ajudou, considere dar uma estrela! ⭐️</p>
-    <p>Feito com ❤️ e Python</p>
+    <p>⭐️ Se este projeto te ajudou ou inspirou, considere dar uma estrela! ⭐️</p>
+    <p>Feito com ❤️ e Python por <a href="https://github.com/samuelmaiapro">Samuel Maia</a></p>
 </div>
